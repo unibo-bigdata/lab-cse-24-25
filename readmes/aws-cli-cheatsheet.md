@@ -104,7 +104,7 @@ aws s3api list-objects-v2 --bucket <my_bucket_name> --prefix <path_to_filter_on>
 Documentation is available [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/emr/index.html#cli-aws-emr).
 
 
-Enable inbound SSH connections to the Security Group of the Master node (must be done only once).
+Enable inbound SSH connections to the Security Group of the Master node (must be done only once, but one cluster must have been created first - see next command).
 
 ```bash
 aws ec2 authorize-security-group-ingress --group-name ElasticMapReduce-master --ip-permissions IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges="[{CidrIp=0.0.0.0/0}]"
