@@ -11,6 +11,7 @@ Teacher: [Enrico Gallinucci](https://www.unibo.it/sitoweb/enrico.gallinucci)
 Code and instructions for every laboratory will be released progressively. With each release, a new README file will be published under the "readmes" folder.
 - [101 Setup](readmes/101.md)
 - [102 Basic Spark](readmes/102.md)
+- [104 Spark MovieLens](readmes/104.md)
 - TBC
 
-Last update: 16/10/2024
+Last update: 12/11/2024
