@@ -32,6 +32,9 @@ object Commons {
     if(deploymentMode == "local"){
       return "file://" + Config.projectDir + "/" + localPath
     }
+    else if(deploymentMode == "sharedRemote"){
+      return "s3a://" + Config.s3sharedBucketName + "/" + remotePath
+    }
     else{
       return "s3a://" + Config.s3bucketName + "/" + remotePath
     }
