@@ -15,6 +15,7 @@ object MovieLens {
   val path_ml_tags = path_to_datasets + "ml-tags.csv"
 
   val path_output_avgRatPerMovie = "/output/avgRatPerMovie"
+  val path_output_avgRatPerGenre = "/output/avgRatPerGenre"
 
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder.appName("MovieLens job").getOrCreate()
@@ -48,6 +49,12 @@ object MovieLens {
 
     val rddMoviesKV = rddMovies.map(x => (x._1,x._2))
 
+    val rddMoviesByGenresKV = rddMovies.
+      map(x => (x._1,x._3)).
+      flatMapValues(x => x.split('|'))
+    val rddMoviesByGenresKV2 = rddMovies.
+      flatMap({case(id,tit,gen) => gen.split('|').map(g => (id,g))})
+
     if (job=="1"){
       rddRatings.
         map(x => ((x._2),(x._3))).
@@ -80,6 +87,29 @@ object MovieLens {
         coalesce(1).
         toDF().write.format("csv").mode(SaveMode.Overwrite).
         save(Commons.getDatasetPath(writeMode,path_output_avgRatPerMovie))
+    }
+    else if (job=="4"){
+      rddRatings.
+        map(x => (x._2,x._3)).
+        join(rddMoviesKV).
+        map(x => (x._2._2,x._2._1)).
+        aggregateByKey((0.0,0.0))((a,v)=>(a._1+v, a._2+1),(a1,a2)=>(a1._1+a2._1,a1._2+a2._2)).
+        map(x => (x._1, x._2._1/x._2._2, x._2._2)).
+        coalesce(1).
+        toDF().write.format("csv").mode(SaveMode.Overwrite).
+        save(Commons.getDatasetPath(writeMode,path_output_avgRatPerGenre))
+    }
+    else if (job=="5"){
+      rddRatings.
+        map(x => (x._2,x._3)).
+        aggregateByKey((0.0,0.0))((a,v)=>(a._1+v, a._2+1),(a1,a2)=>(a1._1+a2._1,a1._2+a2._2)).
+        join(rddMoviesKV).
+        map(x => (x._2._2,(x._2._1._1,x._2._1._2))).
+        aggregateByKey((0.0,0.0))((a,v)=>(a._1+v._1, a._2+v._2),(a1,a2)=>(a1._1+a2._1,a1._2+a2._2)).
+        map(x => (x._1, x._2._1/x._2._2, x._2._2)).
+        coalesce(1).
+        toDF().write.format("csv").mode(SaveMode.Overwrite).
+        save(Commons.getDatasetPath(writeMode,path_output_avgRatPerGenre))
     }
     else {
       println("Wrong job number")
