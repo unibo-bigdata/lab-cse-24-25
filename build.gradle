@@ -55,6 +55,7 @@ dependencies {
     implementation 'org.apache.spark:spark-core_2.12:3.5.1'
     implementation 'org.apache.spark:spark-sql_2.12:3.5.1'
     implementation 'org.apache.spark:spark-hive_2.12:3.5.1'
+    implementation 'org.apache.spark:spark-streaming_2.12:3.5.1'
 
     //implementation 'org.scala-sbt:compiler-bridge_2.12:1.9.3'
 
