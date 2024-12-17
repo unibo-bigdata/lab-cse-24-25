@@ -16,6 +16,7 @@ In this README, you can find a vademecum of the steps you need to take run Spark
         - Make sure that you don't lose it or mess with it; if you do, you must re-create it
     - [Create a cluster](101.md#101-3-working-with-spark)
         - EC2 machines are limited to m4.large (2 cores, 8GB of RAM)
+            - **Update 17/12/2024**: apparently, m5.xlarge (4 cores, 16GB of RAM) can be used as well (despite AWS Academy's instructions saying otherwise)
         - You cannot request a cluster with more than 32 cores overall
         - Double-check the number of "core" instances, depending on the amount of resources you plan to use
     - [Get the MasterDNS of the cluster](aws-cli-cheatsheet.md#emr) (will be needed in the Spark run configuration)
